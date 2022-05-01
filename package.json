@@ -1,0 +1,35 @@
+{
+  "name": "delio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./build/app.js",
+  "scripts": {
+    "test": "mocha --loader=ts-node/esm --extension ts --exit",
+    "dev": "nodemon ./src/app.ts",
+    "build": "npx tsc",
+    "start": "node ./build/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.3.1",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.13",
+    "@types/mocha": "^9.1.1",
+    "@types/mongoose": "^5.11.97",
+    "@types/nock": "^11.1.0",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "mongodb-memory-server": "^8.5.2",
+    "nock": "^13.2.4",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "@stoqey/finnhub": "^0.3.4",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.1",
+    "nodemon": "^2.0.16"
+  }
+}
