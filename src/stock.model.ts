@@ -33,7 +33,7 @@ class Stock implements Quote {
         this.units = parseInt(`${process.env.DEFAULT_STOCK_UNITS}`);
     };
 
-    async difference(): Promise<String> {
+    async difference(): Promise<string> {
         const stock = await MQuote.findOne({ symbol: this.symbol });
 
         if (!stock) {
@@ -49,7 +49,7 @@ class Stock implements Quote {
 
         return {
             name: this.symbol,
-            difference,
+            difference: parseFloat(difference).toFixed(2),
             type 
         };
     };

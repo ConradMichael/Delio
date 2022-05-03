@@ -14,42 +14,75 @@ describe('Our stock class', async () => {
         await connect(`${mongod.getUri()}stocks`);
     });
 
-    const symbol = 'TEST';
+    const PROF = 'PROF';
 
     nock('https://finnhub.io/api/v1')
     .persist()
-    .get(uri => uri.includes(symbol))
+    .get(uri => uri.includes(PROF))
     .reply(200, {
-        symbol,
+        PROF,
         c: 2,
         pc: 1
     });
 
+    const LOSS = 'LOSS';
+
+    nock('https://finnhub.io/api/v1')
+    .persist()
+    .get(uri => uri.includes(LOSS))
+    .reply(200, {
+        LOSS,
+        c: 1,
+        pc: 2
+    });
+
     it('should update the class values when initialised', async () => {
-        const stock = new Stock(symbol);
+        const stock = new Stock(PROF);
         await stock.init();
 
         expect(stock.close).equal(2);
         expect(stock.prevClose).equal(1);
-        expect(stock.symbol).equal(symbol);
+        expect(stock.symbol).equal(PROF);
     });
 
-    it('should calculate the difference (profit or loss) of a stock', async () => {
-        const stock = new Stock(symbol);
+    it('should calculate the difference of a stock (Profit)', async () => {
+        const stock = new Stock(PROF);
         await stock.init();
 
         const difference = await stock.difference();
         expect(difference).equal('10.00');
     });
 
+    it('should calculate the difference of a stock (Loss)', async () => {
+        const stock = new Stock(LOSS);
+        await stock.init();
+
+        const difference = await stock.difference();
+        expect(difference).equal('-10.00');
+    });
+
     it('should return a description with the symbol, difference and type (Profit)', async () => {
-        const stock = new Stock(symbol);
+        const stock = new Stock(PROF);
         await stock.init();
 
         const expected = {
-            name: symbol,
+            name: PROF,
             difference: '10.00',
             type: 'Profit'
+        };
+
+        const description = await stock.description();
+        expect(description).deep.equal(expected);
+    });
+
+    it('should return a description with the symbol, difference and type (Loss)', async () => {
+        const stock = new Stock(LOSS);
+        await stock.init();
+
+        const expected = {
+            name: LOSS,
+            difference: '-10.00',
+            type: 'Loss'
         };
 
         const description = await stock.description();
